@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Knuffelarchief</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #87d5ed;
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            background: white;
+            max-width: 800px;
+            margin: auto;
+            padding: 25px;
+            text-align: center;
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        #plushieImage {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            margin: 20px 0;
+            background: #eee;
+        }
+
+        .info {
+            text-align: left;
+            max-width: 500px;
+            margin: auto;
+        }
+
+        .info p {
+            padding: 12px;
+            margin: 5px 0;
+            background: #f0f0f0;
+        }
+
+        .error {
+            color: red;
+            font-size: 20px;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div id="content">
+            <p>Knuffel laden...</p>
+        </div>
+
+    </div>
+
+    <script>
+        const content = document.getElementById("content");
+
+        const plushieId = window.location.hash.substring(1);
+
+        if (!plushieId) {
+
+            content.innerHTML = `
+                <h1>Geen knuffel geselecteerd</h1>
+                <p>Gebruik bijvoorbeeld:</p>
+                <p><b>/i/#1</b></p>
+                <a href="../">Terug naar Knuffelarchief</a>
+            `;
+
+        } else {
+
+            fetch("../plushies.json")
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Could not load plushies.json");
+                    }
+
+                    return response.json();
+                })
+                .then(plushies => {
+
+                    const plushie = plushies.find(
+                        p => String(p.id) === String(plushieId)
+                    );
+
+                    if (!plushie) {
+
+                        content.innerHTML = `
+                            <h1>Knuffel niet gevonden</h1>
+                            <p class="error">
+                                Er bestaat geen knuffel met ID ${plushieId}.
+                            </p>
+                            <a href="../">Terug naar Knuffelarchief</a>
+                        `;
+
+                        return;
+                    }
+
+                    content.innerHTML = `
+                        <h1>${plushie.name}</h1>
+
+                        <img
+                            id="plushieImage"
+                            src="../${plushie.image}"
+                            alt="${plushie.name}"
+                        >
+
+                        <div class="info">
+
+                            <p>
+                                <b>Naam:</b>
+                                ${plushie.name}
+                            </p>
+
+                            <p>
+                                <b>ID:</b>
+                                ${plushie.id}
+                            </p>
+
+                            <p>
+                                <b>Merk:</b>
+                                ${plushie.brand || plushie.merk || "Onbekend"}
+                            </p>
+
+                            <p>
+                                <b>Grootte:</b>
+                                ${plushie.size || plushie.grootte || "Onbekend"}
+                            </p>
+
+                        </div>
+
+                        <a href="../">
+                            ← Terug naar Knuffelarchief
+                        </a>
+                    `;
+
+                    document.title =
+                        plushie.name + " - Knuffelarchief";
+
+                })
+                .catch(error => {
+
+                    console.error(error);
+
+                    content.innerHTML = `
+                        <h1>Error</h1>
+                        <p class="error">
+                            Error
+                        </p>
+                    `;
+                });
+        }
+    </script>
+
+</body>
+</html>
