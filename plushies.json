@@ -2,6 +2,9 @@
     {
         "name": "Hond knuffeldoekje grijs",
         "image": "images/oka.png",
-        "link": "https://frostcat224.github.io/knuffelarchief/i/#1"
+        "link": "https://frostcat224.github.io/knuffelarchief/i/#1",
+        "id": "1",
+        "merk": "Hema",
+        "grootte": "onbekend"
     }
 ]
