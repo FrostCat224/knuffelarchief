@@ -1,10 +1,18 @@
 [
     {
-        "name": "Hond knuffeldoekje grijs",
+        "name": "Hema knuffeldoekje hond met grijze snuit",
         "image": "images/oka.png",
         "link": "https://frostcat224.github.io/knuffelarchief/i/#1",
         "id": "1",
         "brand": "Hema",
         "size": "onbekend"
+    },
+    {
+        "name": "Sunkid ronde eend",
+        "image": "images/ducko.png",
+        "link": "https://frostcat224.github.io/knuffelarchief/i/#2",
+        "id": "2",
+        "brand": "Sunkid",
+        "size": "18 cm"
     }
 ]
